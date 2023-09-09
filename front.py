@@ -47,7 +47,7 @@ def _set_items():
     print(state.item_choice)
     print(device_id)
     response = requests.post(
-        "http://0.0.0.0:8000/recommendation",
+        "https://a20391-b090.s.d-f.pw/recommendation",
         timeout=15,
         json={"items": items, "device_id": int(device_id)}
     ).json()
