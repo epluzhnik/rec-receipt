@@ -1,8 +1,9 @@
 from pydantic import BaseModel
-
+from typing import List
 
 class ItemRecommendationRequest(BaseModel):
-    items: [str]
+    items: List[int]
+    device_id: int
 
 class ItemRecommendationResponse(BaseModel):
-    item: str
+    items: List[int]
