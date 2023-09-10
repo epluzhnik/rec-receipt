@@ -3,9 +3,10 @@ import json
 import numpy as np
 
 class Predictor:
-    def __init__(self):
-        with open('sample.json', 'r') as f:
+    def __init__(self, file_path):
+        with open(file_path, 'r') as f:
             self._model = json.load(f)
+
     def get_recommendations(self, list_of_items, device_id):
         device_id = str(device_id)
 
@@ -33,3 +34,7 @@ class Predictor:
         decoded = [idx2item[x] for x in items]
 
         return decoded
+    
+    def change_model(self, new_f_path):
+        with open(new_f_path, 'r') as f:
+            self._model = json.load(f)
