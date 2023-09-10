@@ -1,7 +1,8 @@
 import logging
-
+import requests
 import pandas as pd
 import streamlit as st
+
 
 logging.getLogger("streamlit_searchbox").setLevel(logging.DEBUG)
 data = pd.read_csv('supermarket_train.csv', delimiter=';')
@@ -12,17 +13,22 @@ nameToItemId = dict(zip(data.name, data.item_id))
 itemIdToName = dict(zip(data.item_id, data.name))
 st.set_page_config(page_title='Формирование чека', layout="wide", initial_sidebar_state="auto", page_icon="📖")
 
-import requests
+
 
 def filter_names():
     print("change names")
     state.NAMES  = data.loc[data['device_id'] == device_id]['name'].unique()
     print(len(data.loc[data['device_id'] == device_id]['name'].unique()))
 
-device_id = st.selectbox(
-    'Идентификатор кассы',
-    device_ids,
-    on_change = filter_names)
+col1, col2, = st.columns(2)
+with col1:
+    device_id = st.selectbox(
+        'Идентификатор кассы',
+        device_ids,
+        on_change = filter_names)
+    col1_2 = st.empty()
+
+
 
 
 
@@ -51,15 +57,14 @@ def _set_items():
         timeout=15,
         json={"items": items, "device_id": int(device_id)}
     ).json()
+
     print(response)
-
-    st.subheader(itemIdToName[response['items'][0]])
-
-
-
-st.multiselect('Выберите позиции', options=state.NAMES, default=[], on_change=_set_items, key='item_choice')
+    
+    with col2:
+        st.subheader(itemIdToName[response['items'][0]])
 
 
+col1_2.multiselect('Выберите позиции', options=state.NAMES, default=[], on_change=_set_items, key='item_choice')
 
 def main():
     st.title = "Формирование чека"
