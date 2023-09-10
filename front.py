@@ -13,7 +13,7 @@ nameToItemId = dict(zip(data.name, data.item_id))
 itemIdToName = dict(zip(data.item_id, data.name))
 st.set_page_config(page_title='Формирование чека', layout="wide", initial_sidebar_state="auto", page_icon="📖")
 title_ = st.empty()
-title_.title('Универсальная рекомендательная система. Команда Link Bizkitыы')
+title_.title('Универсальная рекомендательная система. Команда Link Bizkit')
 uploaded_file = st.file_uploader("Загрузите тренировочный датасет:")
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file, sep='\t')
