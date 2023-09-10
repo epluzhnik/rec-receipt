@@ -12,6 +12,12 @@ names = filtered['name'].unique()
 nameToItemId = dict(zip(data.name, data.item_id))
 itemIdToName = dict(zip(data.item_id, data.name))
 st.set_page_config(page_title='Формирование чека', layout="wide", initial_sidebar_state="auto", page_icon="📖")
+title_ = st.empty()
+title_.title('Универсальная рекомендательная система. Команда Link Bizkit')
+uploaded_file = st.file_uploader("Загрузите тренировочный датасет:")
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file, sep='\t')
+    requests.post('https://a20391-b090.s.d-f.pw/train_model', json={"dataset":df.to_json( orient="index")})
 
 
 
@@ -20,7 +26,9 @@ def filter_names():
     state.NAMES  = data.loc[data['device_id'] == device_id]['name'].unique()
     print(len(data.loc[data['device_id'] == device_id]['name'].unique()))
 
+
 col1, col2, = st.columns(2)
+#
 with col1:
     device_id = st.selectbox(
         'Идентификатор кассы',
@@ -59,7 +67,7 @@ def _set_items():
     ).json()
 
     print(response)
-    
+
     with col2:
         st.subheader(itemIdToName[response['items'][0]])
 
